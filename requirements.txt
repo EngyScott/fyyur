@@ -1,0 +1,4 @@
+babel DONE
+python-dateutil==2.6.0 DONE
+flask-moment DONE
+flask-wtf DONE
