@@ -12,8 +12,9 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import FlaskForm
 from forms import *
-from models import *
+from models import Venue, Artist, Shows
 from flask_migrate import Migrate
+from datetime import datetime
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -103,6 +104,8 @@ def search_venues():
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
+  data={}
+  error = False
   try:
     # query upcoming shows with join artist and venue tables 
     upcoming_shows = db.session.query(Artist, Shows).join(Shows).join(Venue).\
@@ -154,8 +157,10 @@ def show_venue(venue_id):
     }
       # print('venues: ', venues)
   except:
-    abort(400)
+    error = True
   finally:
+    if error:
+      abort(400)
     return render_template('pages/show_venue.html', venue=data)
 # ------------------------
 #  Create Venue
@@ -191,7 +196,7 @@ def create_venue_submission():
       abort(400)
     else:  
       error = False
-    return redirect(url_for('index'))
+      return redirect(url_for('index'))
   
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
   
@@ -416,6 +421,7 @@ def create_artist_submission():
   form = ArtistForm(request.form)
   # called upon submitting the new artist listing form
   # fetch data from form
+  error=False
   try:
     # TODO: insert form data as a new Artist record in the db
     new_artist = Artist()
@@ -435,10 +441,8 @@ def create_artist_submission():
     db.session.close()
     if error:
       abort(400)
-    else:
-      error=False
       # return jsonify(data)
-      return redirect(url_for('index'))
+    return redirect(url_for('index'))
 # ----------------------------------------------------------------------
 #  Shows
 #  ---------------------------------------------------------------------
