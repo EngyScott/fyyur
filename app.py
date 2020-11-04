@@ -12,18 +12,18 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import FlaskForm
 from forms import *
-from models import Venue, Artist, Shows
+from models import Venue, Artist, Shows, app, db
 from flask_migrate import Migrate
 from datetime import datetime
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
-app = Flask(__name__)
-moment = Moment(app)
+# app = Flask(__name__)
 app.config.from_object('config')
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-# db.init_app(app)
+moment = Moment(app)
+# db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
+db.init_app(app)
 # new_venue = Venue(name='Nano', city='Cairo', state='NA', address='120 orabi sydni', phone='2585265456', image_link='https://images.unsplash.com/photo-1543900694-133f37abaaa5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60', facebook_link='https://www.facebook.com/TheMusicalHop', website='', genres='Roll N Rock', seeking_talent=False, seeking_description='')
 
 #----------------------------------------------------------------------------#
